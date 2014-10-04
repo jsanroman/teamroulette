@@ -1,16 +1,16 @@
 from django.shortcuts import render, redirect
 from . import forms
 
-def main(request):
+def process_form(request, form_class):
     dictionary = {'name': 'Miguel'}
     if request.method == 'GET':
-        form = forms.TeamForm()
+        form = form_class()
         dictionary['form'] = form
         return render(request,
                       'teams/index.html',
                       dictionary=dictionary)
     elif request.method == 'POST':
-        form = forms.TeamForm(data=request.POST)
+        form = form_class(data=request.POST)
         if form.is_valid():
             return redirect('/')
         else:
@@ -18,3 +18,7 @@ def main(request):
             return render(request,
                           'teams/index.html',
                           dictionary=dictionary)
+
+def main(request):
+    form_class = forms.TeamForm
+    return process_form(request, form_class)
