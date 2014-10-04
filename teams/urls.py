@@ -2,5 +2,6 @@ from django.conf.urls import patterns, url
 
 urlpatterns = patterns(
     '',
-    url('^$', 'teams.views.main'),
+    url('^team/$', 'teams.views.team', name='team'),
+    url('^player/$', 'teams.views.player', name='player'),
 )

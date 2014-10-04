@@ -1,4 +1,6 @@
 from django.shortcuts import render, redirect
+from django.core.urlresolvers import reverse
+
 from . import forms
 
 def process_form(request, form_class):
@@ -12,13 +14,25 @@ def process_form(request, form_class):
     elif request.method == 'POST':
         form = form_class(data=request.POST)
         if form.is_valid():
-            return redirect('/')
+            if hasattr(form, 'save'):
+                form.save()
+            return redirect(reverse('home'))
         else:
             dictionary['form'] = form
             return render(request,
                           'teams/index.html',
                           dictionary=dictionary)
 
-def main(request):
+def team(request):
     form_class = forms.TeamForm
     return process_form(request, form_class)
+
+def player(request):
+    form_class = forms.PlayerModelForm
+    return process_form(request, form_class)
+
+
+
+
+
+
